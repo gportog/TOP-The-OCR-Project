@@ -6,10 +6,12 @@ var options = {
 	binary: '/usr/bin/tesseract'
 };
 
-tesseract.process(__dirname + '/samples/test.jpg', options, function(err, text) {
-   if(err) {
-       console.error(err);
-   } else {
-       console.log(text);
-   }
-});
+exports.tesseract_handler = (cb) => {
+    tesseract.process(__dirname + '/samples/test.jpg', options, function(err, text) {
+      if(err) {
+        cb(500);
+      } else {
+        cb(text);
+      } 
+    });
+};

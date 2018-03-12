@@ -6,12 +6,26 @@ require('dotenv').config();
 
 
 var app = express();
-app.use(express.static(__dirname + "./public"));
+app.use(express.static("public"));
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-var upload = multer({ dest: "uploads/" });
+var upload = multer({ dest: "uploads/" }),
+    ocr = require('./ocr');
+
+
+app.post('/v1/convert/ocr', (req, res) => {   
+    ocr.tesseract_handler(function(response){
+     if(response == 500){
+      res.status(500).json({message : "Error to convert the image!"});
+     } 
+     else {
+      console.log(response); 
+      res.status(200).send(response);
+     }
+    });
+});
 
 
 app.listen(process.env.PORT);
