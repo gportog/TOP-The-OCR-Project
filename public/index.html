@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OCR Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Try it out!</h2>
+  
+   <form class="form-inline" name="add_ocr" id="add_ocr" 
+         method="POST" action="/v1/convert/ocr" >
+    <div class="col-md-12">
+    <div class="panel panel-default">
+     
+      <div class="panel-heading">  
+       <div class="form-group"> 
+        <label for="file">Image:</label>
+        <input type="file" name="file_img" id="file_img" placeholder="png, jpg, jpeg...">
+        <div class="col-sm-12">
+         <button type="submit" id="convert" class="btn btn-primary">Convert</button>
+        </div>
+       </div>
+      </div>
+
+      <div class="pannel-body">
+        <h5>Result:</h5>
+        <div id="output"></div>
+      </div> 
+
+     </div>
+   </div>
+  </form>
+</div>
+<script type="text/javascript" src="js/ocr_form.js"></script>
+</body>
+</html>
