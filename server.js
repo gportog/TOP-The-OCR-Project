@@ -16,18 +16,26 @@ var upload = multer({ dest: "uploads/" }),
 
 
 app.post('/v1/convert/ocr', upload.single('file_img'), (req, res) => {
-    console.log(JSON.stringify(req.file));
-    
-    ocr.tesseract_handler(req.file.path, function(response){
-     if(response == 500){
-      res.status(500).json({message : "Error to convert the image!"});
-     } 
-     else {
-      console.log(response); 
-      res.status(200).send(response);
+    if (req.file) {
+     if (req.file.size < 28116350){
+      if (req.file.mimetype.search("image") !== -1){
+        ocr.tesseract_handler(req.file.path, function(response){
+         if (response.code == 500){
+           res.status(500).json({ERROR : "Error to convert the image!"});
+         } else {
+          res.status(200).send(response.message);
+         }
+        });    
+      } else {
+        res.status(400).json({ERROR : "Attachment must be png, jpeg or jpg!"}); 
+       } 
+     } else {
+       res.status(400).json({ERROR : "Attachment too long!"});
+      } 
+    } else {
+      res.status(400).json({ERROR : "Empty attachment!"});
      }
-    });
-});
+ });
 
 
 app.listen(process.env.PORT);
