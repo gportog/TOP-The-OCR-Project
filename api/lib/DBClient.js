@@ -65,7 +65,7 @@ DBClient.prototype.insert = function (doc, options) {
     const db = this._db || options.db;
     return new Promise((res, rej) => {
         if (!jsonValidator.isValid(doc, db))
-            return rej(new Error(errorMessages.INVALID_SCHEMA_FIELDS_ERROR(db, jsonValidator.getSchema(db))));
+            return rej(new Error(errorMessages.INVALID_SCHEMA_FIELDS_ERROR(db, jsonValidator.getSchema(db), jsonValidator.listErrors(doc, db))));
         const database = this._client.db.use(db);
         database.insert(doc, (err, body, header) => {
             if (err) return rej(err);
