@@ -20,12 +20,20 @@ JSONValidator.prototype.getSchema = function (schemaName) {
     return JSON.stringify(Schemas[schemaName], null, 2);
 }
 
+JSONValidator.prototype.listErrors = function (doc, schemaName) {
+    if (!this.validSchemas.includes(schemaName))
+        throw new Error(errorMessages.INVALID_SCHEMA_ERROR(this.validSchemas.join(', ')));
+    let validate = ajv.compile(Schemas[schemaName]);
+    if (!validate(doc)) return ajv.errorsText(validate.errors);
+    return null;
+}
+
 JSONValidator.prototype.sanitize = function(doc, schemaName) {
     if (!this.validSchemas.includes(schemaName))
         throw new Error(errorMessages.INVALID_SCHEMA_ERROR(this.validSchemas.join(', ')));
     let validate = ajv.compile(Schemas[schemaName])
     if (validate(doc)) return doc // Returns sanitized document
-    throw new Error(errorMessages.INVALID_SCHEMA_FIELDS_ERROR(schemaName, this.getSchema(schemaName)));
+    throw new Error(errorMessages.INVALID_SCHEMA_FIELDS_ERROR(schemaName, this.getSchema(schemaName), this.listErrors(doc, schemaName)));
 }
 
 JSONValidator.prototype.sanitizeList = function (list, schemaName) {
