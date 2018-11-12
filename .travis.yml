@@ -36,7 +36,7 @@ deploy:
     skip_cleanup: true
     script: ./deployCloudFoundry.sh
     on:
-      repo: mentoring-projects/TOP-The-OCR-Project
+      repo: gportog/TOP-The-OCR-Project
       type: push
       branch:
-        - master
+        - travis
